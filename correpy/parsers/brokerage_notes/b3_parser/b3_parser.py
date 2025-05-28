@@ -44,7 +44,7 @@ class B3Parser(BaseBrokerageNoteParser):
         "Emolumentos": BrokerageNoteFeeType.EMOLUMENTS,
         "Taxa Operacional": BrokerageNoteFeeType.OPERATIONAL_FEE,
         "Clearing": BrokerageNoteFeeType.CLEARING,
-        "ISS* (SÃO PAULO - SP)": BrokerageNoteFeeType.ISS,
+        "ISS": BrokerageNoteFeeType.ISS,
         "Execução": BrokerageNoteFeeType.EXECUTION,
         "Taxa de Custódia": BrokerageNoteFeeType.CUSTODY_FEE,
         "I.R.R.F": BrokerageNoteFeeType.IRRF,
