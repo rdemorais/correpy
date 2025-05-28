@@ -18,6 +18,8 @@ class BrokerageNote:  # pylint:disable=too-many-instance-attributes
     ana_fee: Decimal = Decimal(0)
     emoluments: Decimal = Decimal(0)
     operational_fee: Decimal = Decimal(0)
+    clearing: Decimal = Decimal(0)
+    iss: Decimal = Decimal(0)
     execution: Decimal = Decimal(0)
     custody_fee: Decimal = Decimal(0)
     taxes: Decimal = Decimal(0)
@@ -43,6 +45,10 @@ class BrokerageNote:  # pylint:disable=too-many-instance-attributes
             self.operational_fee += fee_value
         elif fee_type == BrokerageNoteFeeType.EXECUTION:
             self.execution += fee_value
+        elif fee_type == BrokerageNoteFeeType.CLEARING:
+            self.clearing += fee_value
+        elif fee_type == BrokerageNoteFeeType.ISS:
+            self.iss += fee_value
         elif fee_type == BrokerageNoteFeeType.CUSTODY_FEE:
             self.custody_fee += fee_value
         elif fee_type == BrokerageNoteFeeType.TAXES:

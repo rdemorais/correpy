@@ -43,6 +43,8 @@ class B3Parser(BaseBrokerageNoteParser):
         "Taxa A.N.A.": BrokerageNoteFeeType.ANA_FEE,
         "Emolumentos": BrokerageNoteFeeType.EMOLUMENTS,
         "Taxa Operacional": BrokerageNoteFeeType.OPERATIONAL_FEE,
+        "Clearing": BrokerageNoteFeeType.CLEARING,
+        "ISS* (SÃO PAULO - SP)": BrokerageNoteFeeType.ISS,
         "Execução": BrokerageNoteFeeType.EXECUTION,
         "Taxa de Custódia": BrokerageNoteFeeType.CUSTODY_FEE,
         "I.R.R.F": BrokerageNoteFeeType.IRRF,
