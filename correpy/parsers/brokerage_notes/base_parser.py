@@ -105,7 +105,9 @@ class BaseBrokerageNoteParser(ABC):
         return extract_amount_from_line(line=amount_string)
 
     def _create_transaction(self, *, line: str) -> Transaction:
-        line_array = line.split(" ")
+        # Normalize the line by replacing "B3 RV LISTADO" with "B3-RV-LISTADO" to maintain spacing
+        normalized_line = line.replace("B3 RV LISTADO", "B3-RV-LISTADO")
+        line_array = normalized_line.split(" ")
         transaction_type = self.__parse_transaction_type(line_array=line_array)
         security_name = self.__parse_security_name(line_array=line_array)
         unit_price = self.__parse_transaction_unit_price(line_array=line_array)
