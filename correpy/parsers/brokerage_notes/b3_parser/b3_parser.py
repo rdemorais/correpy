@@ -186,7 +186,10 @@ class B3Parser(BaseBrokerageNoteParser):
         for line in financial_summary_brokerage_note_section.text_by_lines:
             if line.startswith(self.NET_VALUE_SECTION_TITLE):
                 brokerage_note = self._get_or_create_brokerage_note_by_page(page=page, page_number=page_number)
+                # If we can't find a date in the line, use the reference date from the note
                 net_date = extract_date_from_line(line=line)
+                if net_date == date.today():  # If no date was found in the line
+                    net_date = brokerage_note.reference_date
                 brokerage_note.update_net_amount_date(net_date=net_date)
                 break
 
