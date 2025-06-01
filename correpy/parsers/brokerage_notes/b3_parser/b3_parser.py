@@ -53,6 +53,10 @@ class B3Parser(BaseBrokerageNoteParser):
     }
     last_transaction_item = "Resumo dos Negócios"
 
+    @property
+    def market_identifiers(self) -> List[str]:
+        return ["B3 RV LISTADO", "B3 RF LISTADO", "1-BOVESPA"]
+
     @classmethod
     def __get_reference_date_from_section(cls, brokerage_note_section: BrokerageNoteSection) -> date:
         return extract_date_from_line(line=brokerage_note_section.full_text)

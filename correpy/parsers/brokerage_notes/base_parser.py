@@ -54,6 +54,13 @@ class BaseBrokerageNoteParser(ABC):
     def last_transaction_item(self) -> str:
         ...
 
+    @property
+    @abstractmethod
+    def market_identifiers(self) -> List[str]:
+        """List of market identifiers that can appear at the start of a transaction line.
+        For example: ['B3 RV LISTADO', 'B3 RF LISTADO', '1-BOVESPA']"""
+        ...
+
     @classmethod
     def _group_words_by_line(cls, *, words: Iterable[WordRectangle]) -> List[List[WordRectangle]]:
         return [
@@ -105,8 +112,13 @@ class BaseBrokerageNoteParser(ABC):
         return extract_amount_from_line(line=amount_string)
 
     def _create_transaction(self, *, line: str) -> Transaction:
-        # Normalize the line by replacing both "B3 RV LISTADO" and "B3 RF LISTADO" with "B3-RV-LISTADO" to maintain spacing
-        normalized_line = line.replace("B3 RV LISTADO", "B3-RV-LISTADO").replace("B3 RF LISTADO", "B3-RV-LISTADO")
+        # Normalize the line by replacing market identifiers with a standard format
+        normalized_line = line
+        for identifier in self.market_identifiers:
+            if line.startswith(identifier):
+                normalized_line = line.replace(identifier, "1-BOVESPA")
+                break
+
         line_array = normalized_line.split(" ")
         transaction_type = self.__parse_transaction_type(line_array=line_array)
         security_name = self.__parse_security_name(line_array=line_array)
