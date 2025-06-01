@@ -176,6 +176,16 @@ class B3Parser(BaseBrokerageNoteParser):
             self.BROKERAGE_NOTE_X_AXIS_START_COORDINATE, self.BROKERAGE_NOTE_FINANCIAL_SUMMARY_Y_AXIS_END, 0, 0
         )
 
+    def __parse_net_amount_section(
+        self, financial_summary_brokerage_note_section: BrokerageNoteSection, page: fitz.TextPage, page_number: int
+    ) -> None:
+        for line in financial_summary_brokerage_note_section.text_by_lines:
+            if line.startswith(self.NET_VALUE_SECTION_TITLE):
+                brokerage_note = self._get_or_create_brokerage_note_by_page(page=page, page_number=page_number)
+                net_date = extract_date_from_line(line=line)
+                brokerage_note.update_net_amount_date(net_date=net_date)
+                break
+
     def set_brokerage_note_fees(self) -> None:
         for page_document in self.fitz_parser.document:  # type:ignore[union-attr]
             page = page_document.get_textpage()
@@ -192,6 +202,12 @@ class B3Parser(BaseBrokerageNoteParser):
                 )
 
                 self.__set_brokerage_note_fees(
+                    financial_summary_brokerage_note_section=financial_summary_brokerage_note_section,
+                    page=page,
+                    page_number=page_number,
+                )
+                
+                self.__parse_net_amount_section(
                     financial_summary_brokerage_note_section=financial_summary_brokerage_note_section,
                     page=page,
                     page_number=page_number,

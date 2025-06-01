@@ -25,10 +25,14 @@ class BrokerageNote:  # pylint:disable=too-many-instance-attributes
     taxes: Decimal = Decimal(0)
     irrf: Decimal = Decimal(0)
     others: Decimal = Decimal(0)
+    net_amount_date: date = field(default_factory=date.today)
     transactions: List[Transaction] = field(default_factory=list)
 
     def add_transaction(self, transaction: Transaction) -> None:
         self.transactions.append(transaction)
+
+    def update_net_amount_date(self, net_date: date) -> None:
+        self.net_amount_date = net_date
 
     def update_fee_from_fee_type(self, fee_type: BrokerageNoteFeeType, fee_value: Decimal) -> None:
         if fee_type == BrokerageNoteFeeType.SETTLEMENT_FEE:
