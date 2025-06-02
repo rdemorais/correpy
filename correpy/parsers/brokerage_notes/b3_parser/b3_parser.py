@@ -1,5 +1,5 @@
 import logging
-from datetime import date
+from datetime import date, timedelta
 from re import sub
 from typing import List
 
@@ -186,10 +186,10 @@ class B3Parser(BaseBrokerageNoteParser):
         for line in financial_summary_brokerage_note_section.text_by_lines:
             if line.startswith(self.NET_VALUE_SECTION_TITLE):
                 brokerage_note = self._get_or_create_brokerage_note_by_page(page=page, page_number=page_number)
-                # If we can't find a date in the line, use the reference date from the note
+                # If we can't find a date in the line, use reference date + 2 days (standard settlement period)
                 net_date = extract_date_from_line(line=line)
                 if net_date == date.today():  # If no date was found in the line
-                    net_date = brokerage_note.reference_date
+                    net_date = brokerage_note.reference_date + timedelta(days=2)
                 brokerage_note.update_net_amount_date(net_date=net_date)
                 break
 
